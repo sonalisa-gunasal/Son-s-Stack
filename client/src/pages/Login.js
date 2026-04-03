@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useThemeContext } from '../ThemeProvider';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 
 function Login() {
+  const { theme, darkMode, toggleTheme } = useThemeContext();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -19,9 +21,12 @@ function Login() {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
-      <Paper sx={{ p: 4, minWidth: 320 }} elevation={6}>
-        <Typography variant="h5" sx={{ mb: 2 }}>Admin Login</Typography>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh', background: theme.background }}>
+      <Paper sx={{ p: 4, minWidth: 320, background: theme.card.background, boxShadow: theme.card.boxShadow }} elevation={6}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h5" sx={{ color: theme.text }}>Admin Login</Typography>
+          <Button onClick={toggleTheme} variant="outlined" sx={{ color: theme.icon, borderColor: theme.icon }}>{darkMode ? 'Light' : 'Dark'} Mode</Button>
+        </Box>
         <form onSubmit={handleLogin}>
           <TextField
             label="Password"

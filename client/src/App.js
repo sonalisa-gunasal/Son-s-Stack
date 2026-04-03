@@ -4,7 +4,7 @@ import MainLayout from './pages/MainLayout';
 import Menu from './pages/Menu';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
-import QuestionPage from './pages/QuestionPage';
+import DashboardView from './pages/DashboardView';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from './ThemeProvider';
 
@@ -17,9 +17,8 @@ function App() {
           {/* Homepage uses no layout, just the garden */}
           <Route path="/" element={<Menu />} />
           {/* All other main pages use MainLayout */}
-          <Route element={<MainLayout />}>
-            <Route path="/category/:category" element={<QuestionPage />} />
-          </Route>
+          {/* Dashboard view is a separate clean page, not using MainLayout */}
+          <Route path="/category/:category" element={<DashboardView />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
         </Routes>

@@ -1,3 +1,119 @@
+.warmOverlay {
+  position: absolute;
+  top: 48vh;
+  left: 50vw;
+  width: 60vw;
+  height: 60vw;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe066bb 0%, #fffbe7cc 60%, #fff 100%);
+  opacity: 0;
+  transform: scale(1);
+  z-index: 100;
+  transition: opacity 0.38s, transform 0.38s;
+  filter: blur(2px);
+  translate: -50% -50%;
+}
+.whiteFade {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  opacity: 1;
+  z-index: 999;
+  animation: whiteFadeIn 0.25s cubic-bezier(.4,2,.6,1) forwards;
+}
+@keyframes whiteFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.flowerBloom {
+  z-index: 99 !important;
+  animation: flowerBloomZoom 0.7s cubic-bezier(.4,2,.6,1) forwards;
+}
+@keyframes flowerBloomZoom {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2) translateY(-18vh);
+    opacity: 1;
+  }
+}
+.petalBloom {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60px;
+  height: 120px;
+  background: radial-gradient(ellipse 60% 100% at 50% 60%, #ffe066 80%, #fffbe7 100%);
+  border-radius: 50% 50% 60% 60% / 60% 60% 100% 100%;
+  opacity: 0.0;
+  transform: translate(-50%, -80%) rotate(var(--petal-rot, 0deg)) scale(0.2);
+  z-index: 98;
+  pointer-events: none;
+  animation: petalBlooming 0.7s cubic-bezier(.4,2,.6,1) forwards;
+  animation-delay: calc(0.07s * var(--petal-idx));
+}
+@keyframes petalBlooming {
+  0% {
+    opacity: 0.0;
+    transform: translate(-50%, -80%) scale(0.2) rotate(var(--petal-rot, 0deg));
+  }
+  60% {
+    opacity: 0.7;
+    transform: translate(-50%, -120%) scale(1.1) rotate(var(--petal-rot, 0deg));
+  }
+  100% {
+    opacity: 0.95;
+    transform: translate(-50%, -140%) scale(1.18) rotate(var(--petal-rot, 0deg));
+  }
+}
+.selectedFlower {
+  transform: scale(1.18) translateY(-10px);
+  filter: drop-shadow(0 0 32px #ffe066cc) brightness(1.13);
+  box-shadow: 0 0 48px 12px #ffe06677;
+  z-index: 20;
+  transition: all 0.18s cubic-bezier(.4,2,.6,1);
+}
+.flowerFade {
+  opacity: 0.18;
+  filter: blur(2.5px) grayscale(0.7);
+  transition: all 0.32s cubic-bezier(.4,2,.6,1);
+  pointer-events: none !important;
+}
+.flowerZoom {
+  transition: all 0.5s cubic-bezier(.4,2,.6,1);
+}
+.gardenToWhite {
+  animation: gardenToWhite 0.18s 0.62s cubic-bezier(.4,2,.6,1) forwards;
+}
+@keyframes gardenToWhite {
+  0% {
+    background: inherit;
+    opacity: 1;
+  }
+  100% {
+    background: #fff;
+    opacity: 1;
+  }
+}
+.fadeOut {
+  animation: fadeOutZoom 0.48s cubic-bezier(.4,2,.6,1) forwards;
+  pointer-events: none !important;
+}
+@keyframes fadeOutZoom {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
 .flowerWrap {
   position: absolute;
   bottom: 2%;
@@ -16,7 +132,7 @@
   pointer-events: auto;
   filter: drop-shadow(0 2px 16px #ffe06633);
   transition: transform 0.7s cubic-bezier(.4,2,.6,1), filter 0.5s;
-  animation: swayReal 7s ease-in-out infinite alternate;
+  animation: swayReal 2s ease-in-out infinite alternate;
   z-index: 2;
 }
 

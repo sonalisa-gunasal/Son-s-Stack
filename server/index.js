@@ -1,95 +1,72 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const sqlite3 = require('sqlite3').verbose();
+// const sqlite3 = require('sqlite3').verbose();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { Client, Pool } = require('pg');
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = new sqlite3.Database('./questions.db');
+// const db = new sqlite3.Database('./questions.db');
 
-// Create tables if not exist
-const initDb = () => {
-  db.run(`CREATE TABLE IF NOT EXISTS categories (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE NOT NULL
+// --- PG DATABASE CREATION LOGIC START ---
+async function ensureSchemaExistsAndInit() {
+  const schemaName = 'sons_stack';
+  const connStr = process.env.PG_ADMIN_URL || 'postgres://postgres:postgres@localhost:5432/postgres';
+  const client = new Client({ connectionString: connStr });
+  await client.connect();
+  // 1. Ensure schema exists
+  await client.query(`CREATE SCHEMA IF NOT EXISTS ${schemaName}`);
+  // 2. Set search_path to schema for this session
+  await client.query(`SET search_path TO ${schemaName}`);
+  // 3. Create tables in the schema
+  await client.query(`CREATE TABLE IF NOT EXISTS categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(64) UNIQUE NOT NULL,
+    description TEXT
   )`);
-  db.run(`CREATE TABLE IF NOT EXISTS questions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    category_id INTEGER,
-    question TEXT,
-    answer TEXT,
-    FOREIGN KEY(category_id) REFERENCES categories(id)
+  await client.query(`CREATE TABLE IF NOT EXISTS technologies (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(64) UNIQUE NOT NULL,
+    category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+    description TEXT
   )`);
-};
-initDb();
+  await client.query(`CREATE TABLE IF NOT EXISTS questions (
+    id SERIAL PRIMARY KEY,
+    technology_id INTEGER REFERENCES technologies(id) ON DELETE CASCADE,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL
+  )`);
+  await client.query(`CREATE TABLE IF NOT EXISTS admins (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(64) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL
+  )`);
+  console.log(`Schema '${schemaName}' and tables ensured.`);
+  // Optionally export a Pool with search_path set for use in routes
+  const pgPool = new Pool({ connectionString: connStr, options: `-c search_path=${schemaName}` });
+  global.pgPool = pgPool;
+  await client.end();
+}
 
-// Admin login
-app.post('/api/login', (req, res) => {
-  const { password } = req.body;
-  const adminPass = process.env.ADMIN_PASS || 'admin123';
-  if (password === adminPass) {
-    const token = jwt.sign({ admin: true }, process.env.JWT_SECRET || 'secret', { expiresIn: '2h' });
-    return res.json({ token });
-  }
-  res.status(401).json({ error: 'Invalid password' });
+ensureSchemaExistsAndInit().catch(e => {
+  console.error('Failed to initialize PostgreSQL schema/tables:', e);
+  process.exit(1);
 });
+// --- PG DATABASE CREATION LOGIC END ---
 
-// Get categories
-app.get('/api/categories', (req, res) => {
-  db.all('SELECT * FROM categories', [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
+// Removed SQLite legacy table creation
 
-// Add category (admin only)
-app.post('/api/categories', (req, res) => {
-  const { name } = req.body;
-  db.run('INSERT INTO categories (name) VALUES (?)', [name], function(err) {
-    if (err) return res.status(400).json({ error: err.message });
-    res.json({ id: this.lastID, name });
-  });
-});
 
-// Edit category (admin only)
-app.put('/api/categories/:id', (req, res) => {
-  const { name } = req.body;
-  db.run('UPDATE categories SET name = ? WHERE id = ?', [name, req.params.id], function(err) {
-    if (err) return res.status(400).json({ error: err.message });
-    res.json({ id: req.params.id, name });
-  });
-});
-
-// Get questions by category
-app.get('/api/questions/:categoryId', (req, res) => {
-  db.all('SELECT * FROM questions WHERE category_id = ?', [req.params.categoryId], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-
-// Add question (admin only)
-app.post('/api/questions', (req, res) => {
-  const { category_id, question, answer } = req.body;
-  db.run('INSERT INTO questions (category_id, question, answer) VALUES (?, ?, ?)', [category_id, question, answer], function(err) {
-    if (err) return res.status(400).json({ error: err.message });
-    res.json({ id: this.lastID, category_id, question, answer });
-  });
-});
-
-// Edit question (admin only)
-app.put('/api/questions/:id', (req, res) => {
-  const { question, answer } = req.body;
-  db.run('UPDATE questions SET question = ?, answer = ? WHERE id = ?', [question, answer, req.params.id], function(err) {
-    if (err) return res.status(400).json({ error: err.message });
-    res.json({ id: req.params.id, question, answer });
-  });
-});
+// --- API ROUTES ---
+app.use('/api/categories', require('./routes/categoryRoutes'));
+app.use('/api/technologies', require('./routes/technologyRoutes'));
+app.use('/api/questions', require('./routes/questionRoutes'));
+app.use('/api/admins', require('./routes/adminRoutes'));
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

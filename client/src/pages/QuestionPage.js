@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Typography, Paper, List, ListItem, ListItemText } from '@mui/material';
+import { useThemeContext } from '../ThemeProvider';
 
 // Placeholder questions for demo
 const questions = {
@@ -15,19 +16,23 @@ const questions = {
 };
 
 function QuestionPage() {
+  const { theme, darkMode, toggleTheme } = useThemeContext();
   const { category } = useParams();
   const list = questions[category] || [];
   return (
-    <Box sx={{ p: 4 }}>
-      <Paper sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h4" sx={{ mb: 2, color: 'secondary.main', fontWeight: 'bold' }}>{category}</Typography>
+    <Box sx={{ p: 4, minHeight: '100vh', background: theme.background }}>
+      <Paper sx={{ p: 3, mb: 3, background: theme.card.background, boxShadow: theme.card.boxShadow }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h4" sx={{ color: theme.icon, fontWeight: 'bold' }}>{category}</Typography>
+          <Button onClick={toggleTheme} variant="outlined" sx={{ color: theme.icon, borderColor: theme.icon }}>{darkMode ? 'Light' : 'Dark'} Mode</Button>
+        </Box>
         <List>
-          {list.length === 0 && <Typography>No questions yet.</Typography>}
+          {list.length === 0 && <Typography sx={{ color: theme.text }}>No questions yet.</Typography>}
           {list.map((item, idx) => (
             <ListItem key={idx}>
               <ListItemText
-                primary={item.q}
-                secondary={item.a}
+                primary={<span style={{ color: theme.text }}>{item.q}</span>}
+                secondary={<span style={{ color: theme.text, opacity: 0.8 }}>{item.a}</span>}
               />
             </ListItem>
           ))}

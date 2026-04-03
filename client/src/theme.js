@@ -4,13 +4,13 @@
 
 export const lightTheme = {
   mode: 'light',
-  background: 'linear-gradient(to bottom, #fff4c2 0%, #ffd580 100%)',
+  background: '#f7f7fa',
   overlay: 'radial-gradient(circle at 20% 0%, #fffbe7cc 0%, #fff0 70%)',
   sidebar: '#fff',
-  accent: '#ffe066',
-  text: '#222',
-  border: '#ffe066',
-  icon: '#ffe066',
+  accent: '#f9d923',
+  text: '#232323',
+  border: '#f9d923',
+  icon: '#f9d923',
   iconBg: '#fff',
   sunflowerImg: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Sunflower_sky_backdrop.jpg',
   petal: { fill: '#f9d923', stroke: '#ffb300' },
@@ -18,23 +18,23 @@ export const lightTheme = {
   smallIconBg: '#fffbe7',
   card: {
     background: '#fff',
-    boxShadow: '0 8px 32px 0 #ffe06633',
+    boxShadow: '0 8px 32px 0 #f9d92322',
     borderRadius: 18,
     transition: 'all 0.5s cubic-bezier(.4,2,.6,1)',
     hover: {
       transform: 'scale(1.03)',
-      boxShadow: '0 12px 36px 0 #ffe06655',
+      boxShadow: '0 12px 36px 0 #f9d92344',
       filter: 'brightness(1.05)',
     },
   },
   button: {
-    background: 'linear-gradient(90deg, #ffe066 60%, #ffd580 100%)',
-    color: '#222',
-    boxShadow: '0 2px 8px #ffe06644',
+    background: 'linear-gradient(90deg, #ffe066 60%, #fff 100%)',
+    color: '#232323',
+    boxShadow: '0 2px 8px #f9d92333',
     borderRadius: 24,
     hover: {
       filter: 'brightness(1.1)',
-      boxShadow: '0 4px 16px #ffd58066',
+      boxShadow: '0 4px 16px #f9d92344',
     },
   },
   animation: {
