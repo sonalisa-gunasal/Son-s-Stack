@@ -1,0 +1,103 @@
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 0;
+  background: linear-gradient(120deg, #fffbe7ee 60%, #ffe06622 100%);
+  box-shadow: -8px 0 32px #ffe06633;
+  z-index: 100;
+  overflow: hidden;
+  transition: width 0.5s cubic-bezier(.4,2,.6,1), box-shadow 0.5s;
+  display: flex;
+  flex-direction: column;
+}
+.open {
+  width: 35vw;
+  min-width: 320px;
+  max-width: 480px;
+  box-shadow: -12px 0 48px #ffe06655;
+}
+.panelContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.5rem 2rem 2rem 2rem;
+  scroll-behavior: smooth;
+}
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e6b800;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  letter-spacing: 0.03em;
+}
+.questions {
+  margin-bottom: 2rem;
+}
+.accordion {
+  margin-bottom: 1.2rem;
+  background: none;
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px #ffe06622;
+  overflow: hidden;
+}
+.accordion summary {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  padding: 0.8rem 1rem;
+  background: #fffbe7cc;
+  cursor: pointer;
+  outline: none;
+  border-radius: 14px;
+  transition: background 0.3s;
+}
+.accordion[open] summary {
+  background: #ffe06644;
+}
+.answer {
+  padding: 1rem 1.2rem 1.2rem 1.2rem;
+  color: #444;
+  background: #fffbe7bb;
+  border-radius: 0 0 14px 14px;
+  font-size: 1rem;
+}
+.closeBtn {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  color: #e6b800;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.closeBtn:hover {
+  opacity: 1;
+}
+.decorPetal1, .decorPetal2 {
+  position: absolute;
+  opacity: 0.13;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.decorPetal1 {
+  left: 0;
+  bottom: 2vh;
+  width: 80px;
+  height: 80px;
+  background-image: url('../assets/sunflower.png');
+}
+.decorPetal2 {
+  right: 2vw;
+  top: 12vh;
+  width: 48px;
+  height: 48px;
+  background-image: url('../assets/sunflower.png');
+}

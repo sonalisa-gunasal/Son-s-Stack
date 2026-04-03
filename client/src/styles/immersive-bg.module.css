@@ -1,0 +1,89 @@
+.immersiveBg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  transition: background 0.8s cubic-bezier(.4,2,.6,1);
+}
+.sunrise {
+  background: linear-gradient(120deg, #fffbe7 0%, #ffd580 60%, #fff4c2 100%);
+}
+.moon {
+  background: linear-gradient(120deg, #0f172a 0%, #23283a 60%, #020617 100%);
+}
+.petal {
+  position: absolute;
+  width: 36px;
+  height: 54px;
+  opacity: 0.7;
+  animation: petalDrift 14s linear infinite;
+}
+.petal1 { left: 12vw; animation-delay: 0s; }
+.petal2 { left: 38vw; animation-delay: 4s; }
+.petal3 { left: 62vw; animation-delay: 8s; }
+.petal4 { left: 80vw; animation-delay: 2s; }
+@keyframes petalDrift {
+  0% { top: -60px; transform: rotate(-10deg) scale(1); opacity: 0; }
+  10% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+  100% { top: 100vh; transform: rotate(18deg) scale(1.1); opacity: 0; }
+}
+.leaf {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  opacity: 0.13;
+  animation: leafSway 18s ease-in-out infinite alternate;
+}
+.leaf1 { left: 8vw; bottom: 8vh; animation-delay: 0s; }
+.leaf2 { left: 70vw; bottom: 12vh; animation-delay: 7s; }
+@keyframes leafSway {
+  0% { transform: rotate(-8deg) scale(1); }
+  100% { transform: rotate(8deg) scale(1.08); }
+}
+.sunflowerCorner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 120px;
+  height: 120px;
+  z-index: 1;
+  animation: sunflowerSway 7s ease-in-out infinite alternate;
+}
+@keyframes sunflowerSway {
+  0% { transform: rotate(-2deg) scale(1); }
+  100% { transform: rotate(3deg) scale(1.04); }
+}
+.firefly {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #7dd3fc 0%, #23283a 80%);
+  opacity: 0.7;
+  animation: fireflyFloat 12s linear infinite;
+}
+.firefly1 { left: 18vw; animation-delay: 0s; }
+.firefly2 { left: 44vw; animation-delay: 3s; }
+.firefly3 { left: 68vw; animation-delay: 7s; }
+.firefly4 { left: 82vw; animation-delay: 5s; }
+@keyframes fireflyFloat {
+  0% { top: 100vh; opacity: 0; }
+  10% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+  100% { top: -40px; opacity: 0; }
+}
+.stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-radial-gradient(circle at 20% 10%, #fff8 0 1px, transparent 1px 100px),
+              repeating-radial-gradient(circle at 80% 30%, #fff6 0 1px, transparent 1px 120px),
+              repeating-radial-gradient(circle at 60% 80%, #fff4 0 1px, transparent 1px 90px);
+  opacity: 0.13;
+  transition: opacity 0.7s;
+}

@@ -1,0 +1,29 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 32vh;
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
+  background: none;
+}
+.title {
+  font-family: 'Caveat', cursive, sans-serif;
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: var(--hero-title);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 16px var(--hero-title-shadow);
+  transition: color 0.7s, text-shadow 0.7s;
+}
+.subtitle {
+  font-size: 1.4rem;
+  color: var(--hero-subtitle);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin-bottom: 0;
+  text-shadow: 0 1px 8px var(--hero-title-shadow);
+  transition: color 0.7s, text-shadow 0.7s;
+}

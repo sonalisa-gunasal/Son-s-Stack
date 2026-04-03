@@ -1,0 +1,38 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment variables
+.env
+
+# Mac system files
+.DS_Store
+
+# VSCode settings
+.vscode/
+
+# SQLite DB
+*.db
+*.sqlite
+
+# Coverage
+coverage/
+
+# Misc
+*.log
+*.tgz
+
+# React
+client/.env
+client/.env.*
+
+# SonarQube
+.sonarqube/

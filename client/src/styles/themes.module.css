@@ -1,0 +1,28 @@
+:root {
+  --hero-title: #222;
+  --hero-title-shadow: #ffe06688;
+  --hero-subtitle: #444;
+  --search-bg: #fffbe7;
+  --search-shadow: #ffe06633;
+  --search-text: #222;
+  --search-icon: #f9d923;
+  --card-bg: #fff;
+  --card-shadow: #ffe06633;
+  --petal: #f9d923;
+  --leaf: #8bc34a;
+  --leaf-stroke: #558b2f;
+}
+[data-theme='dark'] {
+  --hero-title: #f5f5f5;
+  --hero-title-shadow: #7dd3fc99;
+  --hero-subtitle: #b6d0e2;
+  --search-bg: #23283a;
+  --search-shadow: #7dd3fc33;
+  --search-text: #f5f5f5;
+  --search-icon: #7dd3fc;
+  --card-bg: #23283a;
+  --card-shadow: #7dd3fc33;
+  --petal: #64748b;
+  --leaf: #334155;
+  --leaf-stroke: #23283a;
+}
