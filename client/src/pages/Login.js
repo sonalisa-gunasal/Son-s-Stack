@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useThemeContext } from '../ThemeProvider';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
+import { useAdmin } from '../AdminContext';
 
 function Login() {
   const { theme, darkMode, toggleTheme } = useThemeContext();
@@ -9,12 +10,13 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const { loginAdmin } = useAdmin();
   const handleLogin = async (e) => {
     e.preventDefault();
     // Placeholder: Replace with real API call
     if (password === 'admin123') {
-      localStorage.setItem('isAdmin', 'true');
-      navigate('/admin');
+      loginAdmin();
+      navigate('/');
     } else {
       setError('Invalid password');
     }

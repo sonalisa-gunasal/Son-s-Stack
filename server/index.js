@@ -10,6 +10,11 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+// Disable caching for all API responses
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});
 
 // const db = new sqlite3.Database('./questions.db');
 
@@ -53,20 +58,21 @@ async function ensureSchemaExistsAndInit() {
   await client.end();
 }
 
-ensureSchemaExistsAndInit().catch(e => {
-  console.error('Failed to initialize PostgreSQL schema/tables:', e);
-  process.exit(1);
-});
 // --- PG DATABASE CREATION LOGIC END ---
 
-// Removed SQLite legacy table creation
+// Only start server after DB is ready
+ensureSchemaExistsAndInit()
+  .then(() => {
+    // --- API ROUTES ---
+    app.use('/api/categories', require('./routes/categoryRoutes'));
+    app.use('/api/technologies', require('./routes/technologyRoutes'));
+    app.use('/api/questions', require('./routes/questionRoutes'));
+    app.use('/api/admins', require('./routes/adminRoutes'));
 
-
-// --- API ROUTES ---
-app.use('/api/categories', require('./routes/categoryRoutes'));
-app.use('/api/technologies', require('./routes/technologyRoutes'));
-app.use('/api/questions', require('./routes/questionRoutes'));
-app.use('/api/admins', require('./routes/adminRoutes'));
-
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    const PORT = process.env.PORT || 5001;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch(e => {
+    console.error('Failed to initialize PostgreSQL schema/tables:', e);
+    process.exit(1);
+  });

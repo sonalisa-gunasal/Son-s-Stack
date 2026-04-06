@@ -1,3 +1,12 @@
+// GET /api/technologies/category/:categoryId
+exports.getByCategoryId = async (req, res) => {
+  try {
+    const techs = await Technology.getTechnologiesByCategoryId(req.params.categoryId);
+    res.json(techs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 const Technology = require('../models/technologyModel');
 
 exports.getAll = async (req, res) => {

@@ -31,10 +31,16 @@ const deleteTechnology = async (id) => {
   return true;
 };
 
+const getTechnologiesByCategoryId = async (categoryId) => {
+  const { rows } = await pgPool.query('SELECT * FROM technologies WHERE category_id = $1 ORDER BY id', [categoryId]);
+  return rows;
+};
+
 module.exports = {
   getAllTechnologies,
   getTechnologyById,
   createTechnology,
   updateTechnology,
   deleteTechnology,
+  getTechnologiesByCategoryId,
 };
